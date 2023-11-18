@@ -13,3 +13,5 @@ Ideas:
 - Customization: Allow players to customize their ball with different colors, patterns, or accessories earned through completing levels or achieving milestones.
 
 - Level editor mode.
+
+- Each player action (moving and other stuff) will reduce the ball size(hp), so the player should choose the optimal path
