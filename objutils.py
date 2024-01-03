@@ -160,13 +160,19 @@ def collision(obj1, obj2):
             vt1 = pointtemp.vx * unit_v[0] + pointtemp.vy * unit_v[1]
             vt2 = pointvirt.vx * unit_v[0] + pointvirt.vy * unit_v[1]
 
-            vn1 = math.sqrt(pointtemp.vx**2 + pointtemp.vy**2 - vt1**2)
-            vn2 = math.sqrt(pointvirt.vx**2 + pointvirt.vy**2 - vt2**2)
+            vn1 = -pointtemp.vx * unit_v[1] + pointtemp.vy * unit_v[0]
+            vn2 = -pointvirt.vx * unit_v[1] + pointvirt.vy * unit_v[0]
 
             vn1c = vn1
 
             vn1 = ((m1 - m2) * vn1c + 2 * m2 * vn2) / (m1 + m2)
-            vn2 = -(2 * m1 * vn1c + (m2 - m1) * vn2) / (m1 + m2)
+            vn2 = (2 * m1 * vn1c + (m2 - m1) * vn2) / (m1 + m2)
+
+            if isinstance(obj2, rectangle.Rect):
+                if obj2.static == 1:
+                    vn1 = -vn1c
+                    vn2 = 0
+                    vt2 = 0
 
             vt1 *= 0.9
             vt2 *= 0.9
@@ -182,6 +188,7 @@ def collision(obj1, obj2):
 
             point.vx = pointtemp.vx
             point.vy = pointtemp.vy
+
 
             p1.vx = pointvirt.vx * (1 - inf)
             p2.vx = pointvirt.vx * inf

@@ -24,10 +24,10 @@ def main():
         b2 = ball.Ball(SCRSIZE, SCRSIZE / 3, 10, 10, 1, (100, 30, 80))
         b3 = ball.Ball(SCRSIZE / 5, SCRSIZE / 5, 10, 10, 1, (100, 100, 80))
         '''
-        player = ball.Ball(SCRSIZE / 3, SCRSIZE / 2, 10, 30, 1, (100, 0, 80))
-        rect1 = rect.Rect(SCRSIZE/2,SCRSIZE/2,50,50,0.1,(10,80,80), 0)
+        player = ball.Ball(SCRSIZE / 3, SCRSIZE / 2, 10, 30, 3, (100, 0, 80))
+        rect1 = rect.Rect(SCRSIZE/2,SCRSIZE/2,50,50,1,(10,80,80), 0)
         floor = rect.Rect(SCRSIZE/2,SCRSIZE, 50, SCRSIZE, 100, (25,35,100), 1)
-        floor1 = rect.Rect(SCRSIZE,SCRSIZE, 50, SCRSIZE, 100, (25,35,100), 1)
+        floor1 = rect.Rect(SCRSIZE/2,0, 50, SCRSIZE, 100, (25,35,100), 1)
         floor2 = rect.Rect(SCRSIZE,SCRSIZE/2, SCRSIZE, 50, 100, (25,35,100), 1)
         floor3 = rect.Rect(0,SCRSIZE/2, SCRSIZE, 50, 100, (25,35,100), 1)
 
@@ -57,8 +57,6 @@ def main():
             dt = crt_time - prev_time
             prev_time = crt_time
 
-            if dt > 0.006:
-                dt = 0.006
 
             clock.tick()
             print(clock.get_fps())
@@ -78,10 +76,15 @@ def main():
             b3.draw(screen)
             '''
             # simulation
+
+            max_step = 10
+            i =0
+
             while dt > 0.0:
                 player.forces()
                 rect1.forces()
 
+                i+=1
                 '''
                 b1.spring_forces()
                 b2.spring_forces()
@@ -91,10 +94,10 @@ def main():
                 keys = pygame.key.get_pressed()
                 if keys[pygame.K_a]:
                     for points in player.points:
-                        points.fx -= 5
+                        points.fx -= 25
                 if keys[pygame.K_d]:
                     for points in player.points:
-                        points.fx += 5
+                        points.fx += 25
                 if keys[pygame.K_s]:
                     for points in player.points:
                         points.vx -= 0.003*points.vx
@@ -113,6 +116,8 @@ def main():
                 ut.colider(floor2)
                 ut.colider(floor3)
 
+                ut.collision(player, rect1)
+                ut.collision(rect1, player)
 
                 ut.collision(player, floor)
                 ut.collision(rect1, floor)
@@ -128,16 +133,6 @@ def main():
                 ut.collision(player, floor3)
                 ut.collision(rect1, floor3)
 
-                ut.collision(player, rect1)
-                ut.collision(rect1, player)
-
-                ut.collision(player, rect1)
-                ut.collision(rect1, player)
-                ut.collision(player, rect1)
-                ut.collision(rect1, player)
-                ut.collision(player, rect1)
-                ut.collision(rect1, player)
-
                 '''
                 ut.euler_integ(b1, deltatime * 10)
                 ut.euler_integ(b2, deltatime * 10)
@@ -145,6 +140,9 @@ def main():
                 '''
 
                 dt -= deltatime
+
+                if i > max_step:
+                    break
             pygame.display.update()
 
         stats = pstats.Stats(pr)
