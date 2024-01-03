@@ -1,5 +1,6 @@
 import pygame
 
+from camera import Camera
 from sprite import GameSprite
 from player import Player
 from globals import *
@@ -12,7 +13,7 @@ class Scene:
 
         self.atlas_textures = self.gen_atlas_textures('assets/Tiles/spritesheet.png')
 
-        self.sprites = pygame.sprite.Group()
+        self.sprites = Camera()
         self.colliders = pygame.sprite.Group()
 
         self.gameSprite = GameSprite([self.sprites], image=self.atlas_textures['platform_1_t'])
@@ -42,4 +43,4 @@ class Scene:
 
     def draw(self):
         self.app.screen.fill('lightblue')
-        self.sprites.draw(self.app.screen)
+        self.sprites.draw(self.player, self.app.screen)
