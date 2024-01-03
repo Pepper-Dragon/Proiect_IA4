@@ -1,6 +1,7 @@
 import pygame
 import sys
 
+from events import EventHandler
 from globals import *
 from scene import Scene
 
@@ -8,6 +9,9 @@ from scene import Scene
 class Game:
     def __init__(self):
         pygame.init()
+
+        EventHandler.init()
+
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
 
@@ -33,7 +37,8 @@ class Game:
         self.scene.draw()
 
     def events(self):
-        for event in pygame.event.get():
+        EventHandler.poll_events()
+        for event in EventHandler.events:
             if event.type == pygame.QUIT:
                 self.running = False
 

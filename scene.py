@@ -13,11 +13,16 @@ class Scene:
         self.atlas_textures = self.gen_atlas_textures('assets/Tiles/spritesheet.png')
 
         self.sprites = pygame.sprite.Group()
+        self.colliders = pygame.sprite.Group()
+
         self.gameSprite = GameSprite([self.sprites], image=self.atlas_textures['platform_1_t'])
         GameSprite([self.sprites], position=(100, 100))
         GameSprite([self.sprites], position=(200, 200))
 
-        self.player = Player([self.sprites], pygame.Surface((TILE_SIZE * 2, TILE_SIZE * 3)), (600, 100), {})
+        # Floor
+        GameSprite([self.sprites, self.colliders], pygame.Surface((TILE_SIZE * 14, TILE_SIZE * 1)), (200, 500))
+
+        self.player = Player([self.sprites], pygame.Surface((TILE_SIZE * 1, TILE_SIZE * 2)), (400, 100), {'colliders': self.colliders})
 
     def gen_atlas_textures(self, filepath):
         textures = {}
