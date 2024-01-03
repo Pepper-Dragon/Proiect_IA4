@@ -2,6 +2,8 @@ import pygame
 import sys
 
 from globals import *
+from scene import Scene
+
 
 class Game:
     def __init__(self):
@@ -10,6 +12,8 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.running = True
+
+        self.scene = Scene(self)
 
     def run(self):
         while self.running:
@@ -20,11 +24,13 @@ class Game:
         self.close()
 
     def update(self):
+        self.scene.update()
+
         pygame.display.update()
         self.clock.tick(FPS)
 
     def draw(self):
-        self.screen.fill('lightblue')
+        self.scene.draw()
 
     def events(self):
         for event in pygame.event.get():
