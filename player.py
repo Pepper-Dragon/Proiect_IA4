@@ -27,10 +27,10 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_a]:
-            self.velocity.x = -5
+            self.velocity.x = -PLAYER_SPEED
 
         if keys[pygame.K_d]:
-            self.velocity.x = 5
+            self.velocity.x = PLAYER_SPEED
 
     #     jumping
         if self.is_grounded and EventHandler.keydown(pygame.K_SPACE):

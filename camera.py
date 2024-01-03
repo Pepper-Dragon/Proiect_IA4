@@ -12,6 +12,8 @@ class Camera(pygame.sprite.Group):
         #     scale background
         self.bg = pygame.transform.scale(self.bg, (self.bg.get_width() * 2, self.bg.get_height() * 2))
 
+        self.font = pygame.font.SysFont("Arial", 18, bold=True)
+
     def draw(self, target: Player, display: pygame.Surface):
         display.blit(self.bg, (0, 0))
 

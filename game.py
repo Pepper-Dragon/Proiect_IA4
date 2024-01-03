@@ -19,6 +19,8 @@ class Game:
 
         self.scene = Scene(self)
 
+        self.font = pygame.font.SysFont("Arial", 18, bold=True)
+
     def run(self):
         while self.running:
             self.events()
@@ -35,6 +37,7 @@ class Game:
 
     def draw(self):
         self.scene.draw()
+        self.show_fps()
 
     def events(self):
         EventHandler.poll_events()
@@ -46,6 +49,10 @@ class Game:
         pygame.quit()
         sys.exit()
 
+    def show_fps(self):
+        fps = "FPS: " + str(int(self.clock.get_fps()))
+        fps_text = self.font.render(fps, 1, pygame.Color("coral"))
+        self.screen.blit(fps_text, (SCREEN_WIDTH - 100, 10))
 
 if __name__ == "__main__":
     game = Game()
