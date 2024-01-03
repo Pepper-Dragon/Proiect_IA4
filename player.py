@@ -73,6 +73,15 @@ class Player(pygame.sprite.Sprite):
                 if not self.is_grounded and collider.rect.collidepoint(self.rect.centerx, self.rect.bottom + 1):
                     self.is_grounded = True
 
+    def get_adjusted_mouse_pos(self):
+        mouse_pos = pygame.mouse.get_pos()
+
+        player_offset = pygame.math.Vector2()
+        player_offset.x = SCREEN_WIDTH / 2 - self.rect.centerx
+        player_offset.y = SCREEN_HEIGHT / 2 - self.rect.centery
+
+        return mouse_pos + player_offset
+
     def update(self):
         self.input()
         self.move()
