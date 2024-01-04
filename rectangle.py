@@ -1,26 +1,32 @@
 import pygame
 import objutils as ut
 
-GY = 9.8
 
+from sprite import GameSprite
+from globals import *
 
 class Rect:
-    def __init__(self, origin_x, origin_y, height, width, mass, color, static):
+    def __init__(self, groups, image, position, size, mass, color, static):
+
+        actual_position = (position[0] * TILE_SIZE, position[1] * TILE_SIZE)
+        actual_size = (size[0] * TILE_SIZE, size[1] * TILE_SIZE)
 
         self.points = []
         self.springs = []
-        self.height = height
-        self.width = width
+        self.height = actual_size[1]
+        self.width = actual_size[0]
         self.mass = mass
         self.color = color
         self.static = static
 
         self.collider = pygame.Rect(0,0,0,0)
 
-        self.add_point(origin_x-width/2, origin_y-height/2, 0, 0, 0, 0)
-        self.add_point(origin_x+width/2, origin_y-height/2, 0, 0, 0, 0)
-        self.add_point(origin_x+width/2, origin_y+height/2, 0, 0, 0, 0)
-        self.add_point(origin_x-width/2, origin_y+height/2, 0, 0, 0, 0)
+        self.sprite = GameSprite(groups, image, position, size)
+
+        self.add_point(actual_position[0]-self.width/2, actual_position[1]-self.height/2, 0, 0, 0, 0)
+        self.add_point(actual_position[0]+self.width/2, actual_position[1]-self.height/2, 0, 0, 0, 0)
+        self.add_point(actual_position[0]+self.width/2, actual_position[1]+self.height/2, 0, 0, 0, 0)
+        self.add_point(actual_position[0]-self.width/2, actual_position[1]+self.height/2, 0, 0, 0, 0)
 
 
         self.add_spring(0,1,ut.distance(self.points[0].x,self.points[0].y,self.points[1].x,self.points[1].y),0,0)
@@ -39,21 +45,22 @@ class Rect:
         self.springs.append(spring)
 
     def draw(self, screen):
-        verteces = []
-
-        for point in self.points:
-            x = point.x
-            y = point.y
-            vertex = (x, y)
-            verteces.append(vertex)
-
-        pygame.draw.polygon(screen, self.color, verteces, 0)
+        pass
+        # verteces = []
+        #
+        # for point in self.points:
+        #     x = point.x
+        #     y = point.y
+        #     vertex = (x, y)
+        #     verteces.append(vertex)
+        #
+        # pygame.draw.polygon(screen, self.color, verteces, 0)
         #pygame.draw.circle(screen, (0, 0, 225), (self.center.x, self.center.y), 5)
 
     def gravity(self):
         for point in self.points:
             point.fx = 0
-            point.fy = GY * self.mass
+            point.fy = GRAVITY * self.mass
 
     def forces(self):
         if self.static == 1:

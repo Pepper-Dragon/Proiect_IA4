@@ -4,6 +4,7 @@ import sys
 from events import EventHandler
 from globals import *
 from scene import Scene
+from deltaTime import DeltaTime
 
 
 class Game:
@@ -23,6 +24,7 @@ class Game:
 
     def run(self):
         while self.running:
+            DeltaTime.update()
             self.events()
             self.update()
             self.draw()

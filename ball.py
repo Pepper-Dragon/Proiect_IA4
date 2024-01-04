@@ -3,8 +3,7 @@ import pygame
 import pygame.rect
 
 import objutils as ut
-from main import GY
-
+from globals import *
 
 class Ball:
     def __init__(self, origin_x, origin_y, ballradius, num_p, mass, color):
@@ -40,23 +39,23 @@ class Ball:
         spring = ut.CSpring(a, b, length, nx, ny)
         self.springs.append(spring)
 
-    def draw(self, screen):
+    def draw(self, screen, offset):
         verteces = []
 
         for point in self.points:
-            x = point.x
-            y = point.y
+            x = point.x + offset.x
+            y = point.y + offset.y
             vertex = (x, y)
             verteces.append(vertex)
 
         red = (225, 100, 100)
         pygame.draw.polygon(screen, self.color, verteces, 0)
-        pygame.draw.circle(screen, (0, 0, 225), (self.points[0].x, self.points[0].y), 5)
+        pygame.draw.circle(screen, (0, 0, 225), (verteces[0][0], verteces[0][1]), 5)
 
     def gravity(self):
         for point in self.points:
             point.fx = 0
-            point.fy = GY * self.mass
+            point.fy = GRAVITY * self.mass
 
     def forces(self):
         self.gravity()

@@ -1,77 +1,48 @@
 import pygame.sprite
 
+import objutils as utils
+
 from events import EventHandler
 from globals import *
+from ball import Ball
+from deltaTime import DeltaTime
 
 
-class Player(pygame.sprite.Sprite):
-    def __init__(self, groups, image: pygame.Surface, position: tuple, parameters: dict):
-        super().__init__(groups)
-        self.image = image
-        self.image.fill('green')
-        self.rect = self.image.get_rect(topleft=position)
+class Player:
+    def __init__(self, screen, position: tuple, parameters: dict):
+        self.screen = screen
+        self.ball = Ball(position[0], position[1], 10, 30, 1, (100, 0, 80))
 
-        # parameters
-        self.colliders = parameters['colliders']
-
-        self.velocity = pygame.math.Vector2(0, 0)
-        self.mass = 1
-        self.term_vel = TERM_VEL
-
-    #     is grounded ?
-        self.is_grounded = False
+    #     self.image = image
+    #     self.image.fill('green')
+    #     self.rect = self.image.get_rect(topleft=position)
+    #
+    #     # parameters
+    #     self.colliders = parameters['colliders']
+    #
+    #     self.velocity = pygame.math.Vector2(0, 0)
+    #     self.mass = 1
+    #     self.term_vel = TERM_VEL
+    #
+    # #     is grounded ?
+    #     self.is_grounded = False
 
     def input(self):
-        self.velocity.x = 0
+        if EventHandler.is_pressed(pygame.K_a):
+            print('a')
+            for point in self.ball.points:
+                point.fx -= PLAYER_MOVE_FORCE
 
-        keys = pygame.key.get_pressed()
-
-        if keys[pygame.K_a]:
-            self.velocity.x = -PLAYER_SPEED
-
-        if keys[pygame.K_d]:
-            self.velocity.x = PLAYER_SPEED
-
-    #     jumping
-        if self.is_grounded and EventHandler.keydown(pygame.K_SPACE):
-            self.velocity.y = -JUMP_VEL
-
+        if EventHandler.is_pressed(pygame.K_d):
+            for point in self.ball.points:
+                point.fx += PLAYER_MOVE_FORCE
 
     def move(self):
-        self.velocity.y += GRAVITY * self.mass
+        pass
 
-        # Terminal velocity
-        if self.velocity.y > self.term_vel:
-            self.velocity.y = self.term_vel
-
-        self.rect.x += self.velocity.x
-        self.check_collisions('horizontal')
-        self.rect.y += self.velocity.y
-        self.check_collisions('vertical')
-
-    def check_collisions(self, direction):
-        if direction == 'horizontal':
-            for collider in self.colliders:
-                if self.rect.colliderect(collider.rect):
-                    if self.velocity.x > 0:
-                        self.rect.right = collider.rect.left
-                    if self.velocity.x < 0:
-                        self.rect.left = collider.rect.right
-        elif direction == 'vertical':
-            self.is_grounded = False
-
-            for collider in self.colliders:
-                if self.rect.colliderect(collider.rect):
-                    if self.velocity.y >= 0:
-                        self.rect.bottom = collider.rect.top
-                        self.velocity.y = 0
-                    if self.velocity.y < 0:
-                        self.rect.top = collider.rect.bottom
-                        self.velocity.y = 0
-
-                # check if is grounded
-                if not self.is_grounded and collider.rect.collidepoint(self.rect.centerx, self.rect.bottom + 1):
-                    self.is_grounded = True
+    def check_collisions(self):
+        for collider in self.colliders:
+            utils.collision(self.ball, collider)
 
     def get_adjusted_mouse_pos(self):
         mouse_pos = pygame.mouse.get_pos()
@@ -83,5 +54,10 @@ class Player(pygame.sprite.Sprite):
         return mouse_pos + player_offset
 
     def update(self):
+        self.ball.forces()
         self.input()
         self.move()
+
+    def draw(self, offset):
+        self.ball.draw(self.screen, offset)
+

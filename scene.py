@@ -1,11 +1,16 @@
 import pygame
 
+import objutils as utils
+
 from camera import Camera
+from deltaTime import DeltaTime
 from sprite import GameSprite
 from player import Player
 from globals import *
-from texturedata import atlas_texture_data
 
+
+from texturedata import atlas_texture_data
+from rectangle import Rect
 
 class Scene:
     def __init__(self, app) -> None:
@@ -13,12 +18,13 @@ class Scene:
 
         self.atlas_textures = self.gen_atlas_textures('assets/Tiles/spritesheet.png')
 
+        self.objects = []
         self.sprites = Camera()
-        self.colliders = pygame.sprite.Group()
+        # self.colliders = pygame.sprite.Group()
 
         # Player
-        self.player = Player([self.sprites], pygame.Surface((TILE_SIZE, TILE_SIZE)), (300, 360),
-                             {'colliders': self.colliders})
+        self.player = Player(app.screen, (300, 360),
+                             {})
 
         self.create_level()
 
@@ -36,45 +42,34 @@ class Scene:
         return textures
 
     def update(self):
-        self.sprites.update()
+        dt = DeltaTime.getDeltaTime()
+
+        while dt > 0:
+            self.player.update()
+
+            deltatime = min(dt, 0.0006)
+
+            utils.euler_integ(self.player.ball, deltatime * 10)
+
+            utils.colider(self.player.ball)
+
+            for obj in self.objects:
+                utils.colider(obj)
+                utils.collision(self.player.ball, obj)
+
+            dt -= deltatime
 
     def draw(self):
         self.app.screen.fill('lightblue')
         self.sprites.draw(self.player, self.app.screen)
+        # self.player.draw()
 
     def create_level(self):
         # Floor
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(7, 13))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(8, 13))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(9, 13))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(10, 13))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(11, 13))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(12, 13))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(13, 13))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(14, 13))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(15, 13))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(16, 13))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(17, 13))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(18, 13))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(19, 13))
+        for i in range(0, 10):
+            self.objects.append(Rect([self.sprites], self.atlas_textures['platform_1_t'], (i, 8), (1, 1), 1, (0, 0, 0), True))
 
-        #         Left wall
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(7, 12))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(7, 11))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(7, 10))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(7, 9))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(7, 8))
-
-        #         Right wall
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(19, 12))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(19, 11))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(19, 10))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(19, 9))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(19, 8))
-
-        #         Middle platform
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(13, 10))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(14, 10))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(15, 10))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(16, 10))
-        GameSprite([self.sprites, self.colliders], image=self.atlas_textures['platform_1_t'], position=(17, 10))
+        # Walls
+        for i in range(0, 8):
+            self.objects.append(Rect([self.sprites], self.atlas_textures['platform_1_t'], (0, i), (1, 1), 1, (0, 0, 0), True))
+            self.objects.append(Rect([self.sprites], self.atlas_textures['platform_1_t'], (9, i), (1, 1), 1, (0, 0, 0), True))

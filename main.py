@@ -25,7 +25,7 @@ def main():
         b3 = ball.Ball(SCRSIZE / 5, SCRSIZE / 5, 10, 10, 1, (100, 100, 80))
         '''
         player = ball.Ball(SCRSIZE / 3, SCRSIZE / 2, 10, 30, 1, (100, 0, 80))
-        rect1 = rect.Rect(SCRSIZE/2,SCRSIZE/2,50,50,0.1,(10,80,80), 0)
+        rect1 = rect.Rect(SCRSIZE/2,SCRSIZE/2,50,50,0.1,(10,80,80), 1)
         floor = rect.Rect(SCRSIZE/2,SCRSIZE, 50, SCRSIZE, 100, (25,35,100), 1)
         floor1 = rect.Rect(SCRSIZE,SCRSIZE, 50, SCRSIZE, 100, (25,35,100), 1)
         floor2 = rect.Rect(SCRSIZE,SCRSIZE/2, SCRSIZE, 50, 100, (25,35,100), 1)

@@ -12,16 +12,19 @@ class Camera(pygame.sprite.Group):
         #     scale background
         self.bg = pygame.transform.scale(self.bg, (self.bg.get_width() * 2, self.bg.get_height() * 2))
 
-        self.font = pygame.font.SysFont("Arial", 18, bold=True)
-
     def draw(self, target: Player, display: pygame.Surface):
         display.blit(self.bg, (0, 0))
 
         offset = pygame.math.Vector2()
-        offset.x = display.get_width() / 2 - target.rect.centerx
-        offset.y = display.get_height() / 2 - target.rect.centery
+        offset.x = display.get_width() / 2 - target.ball.collider.centerx
+        offset.y = display.get_height() / 2 - target.ball.collider.centery
 
         for sprite in self.sprites():
             sprite_offset = offset + sprite.rect.topleft
 
             display.blit(sprite.image, sprite_offset)
+
+#         draw player
+        target.draw(offset)
+
+

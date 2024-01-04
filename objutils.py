@@ -30,7 +30,7 @@ def distance(x1, y1, x2, y2):
     return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
 
 
-def euler_integ(obj, dt):
+def euler_integ(obj: object, dt: object) -> object:
 
     if isinstance(obj, rectangle.Rect):
         if obj.static == 1:

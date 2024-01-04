@@ -7,6 +7,7 @@ class EventHandlerClass:
 
     def poll_events(self):
         self.events = pygame.event.get()
+        self.pressed = pygame.key.get_pressed()
 
     def keydown(self, key):
         for event in self.events:
@@ -14,6 +15,9 @@ class EventHandlerClass:
                 if event.key == key:
                     return True
         return False
+
+    def is_pressed(self, key):
+        return self.pressed[key]
 
     def clicked(self, button=1): # left = 1, right = 3
         for event in self.events:
