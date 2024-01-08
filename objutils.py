@@ -189,3 +189,5 @@ def collision(obj1, obj2):
             p1.vy = pointvirt.vy * (1 - inf)
             p2.vy = pointvirt.vy * inf
 
+    return True
+

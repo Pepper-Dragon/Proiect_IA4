@@ -13,7 +13,7 @@ class Ball:
         self.radius = ballradius
         self.mass = mass
         self.color = color
-        self.p = 10000
+        self.p = 3000
         self.kd = 80
         self.ks = 400
 

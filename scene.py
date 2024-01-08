@@ -8,9 +8,9 @@ from sprite import GameSprite
 from player import Player
 from globals import *
 
-
 from texturedata import atlas_texture_data
 from rectangle import Rect
+
 
 class Scene:
     def __init__(self, app) -> None:
@@ -23,8 +23,7 @@ class Scene:
         # self.colliders = pygame.sprite.Group()
 
         # Player
-        self.player = Player(app.screen, (300, 360),
-                             {})
+        self.player = Player(app.screen, (300, 360), {})
 
         self.create_level()
 
@@ -55,7 +54,8 @@ class Scene:
 
             for obj in self.objects:
                 utils.colider(obj)
-                utils.collision(self.player.ball, obj)
+                if utils.collision(self.player.ball, obj):
+                    self.player.check_grounded(obj)
 
             dt -= deltatime
 
@@ -67,9 +67,12 @@ class Scene:
     def create_level(self):
         # Floor
         for i in range(0, 10):
-            self.objects.append(Rect([self.sprites], self.atlas_textures['platform_1_t'], (i, 8), (1, 1), 1, (0, 0, 0), True))
+            self.objects.append(
+                Rect([self.sprites], self.atlas_textures['platform_1_t'], (i, 8), (1, 1), 1, (0, 0, 0), True))
 
         # Walls
         for i in range(0, 8):
-            self.objects.append(Rect([self.sprites], self.atlas_textures['platform_1_t'], (0, i), (1, 1), 1, (0, 0, 0), True))
-            self.objects.append(Rect([self.sprites], self.atlas_textures['platform_1_t'], (9, i), (1, 1), 1, (0, 0, 0), True))
+            self.objects.append(
+                Rect([self.sprites], self.atlas_textures['platform_1_t'], (0, i), (1, 1), 1, (0, 0, 0), True))
+            self.objects.append(
+                Rect([self.sprites], self.atlas_textures['platform_1_t'], (9, i), (1, 1), 1, (0, 0, 0), True))

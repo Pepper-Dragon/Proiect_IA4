@@ -24,12 +24,11 @@ class Player:
     #     self.mass = 1
     #     self.term_vel = TERM_VEL
     #
-    # #     is grounded ?
-    #     self.is_grounded = False
+        # is grounded ?
+        self.is_grounded = False
 
     def input(self):
         if EventHandler.is_pressed(pygame.K_a):
-            print('a')
             for point in self.ball.points:
                 point.fx -= PLAYER_MOVE_FORCE
 
@@ -37,12 +36,16 @@ class Player:
             for point in self.ball.points:
                 point.fx += PLAYER_MOVE_FORCE
 
+        if EventHandler.keydown(pygame.K_w) and self.is_grounded:
+            for point in self.ball.points:
+                point.vy -= JUMP_VEL
+
     def move(self):
         pass
 
-    def check_collisions(self):
-        for collider in self.colliders:
-            utils.collision(self.ball, collider)
+    def check_grounded(self, collider):
+        if self.ball.collider.centery < collider.collider.centery:
+            self.is_grounded = True
 
     def get_adjusted_mouse_pos(self):
         mouse_pos = pygame.mouse.get_pos()
@@ -58,6 +61,7 @@ class Player:
         self.input()
         self.move()
 
+        self.is_grounded = False
+
     def draw(self, offset):
         self.ball.draw(self.screen, offset)
-
