@@ -12,7 +12,7 @@ class Camera(pygame.sprite.Group):
         #     scale background
         self.bg = pygame.transform.scale(self.bg, (self.bg.get_width() * 2, self.bg.get_height() * 2))
 
-    def draw(self, target: Player, display: pygame.Surface, balls):
+    def draw(self, target: Player, display: pygame.Surface, balls, dynamic_objects):
         display.blit(self.bg, (0, 0))
 
         offset = pygame.math.Vector2()
@@ -26,6 +26,9 @@ class Camera(pygame.sprite.Group):
 
         for ball in balls:
             ball.draw(display, offset)
+
+        for obj in dynamic_objects:
+            obj.draw(display, offset)
 
 #         draw player
         target.draw(offset)

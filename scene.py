@@ -21,6 +21,7 @@ class Scene:
 
         self.objects = []
         self.balls = []
+        self.dynamic_objects = []
         self.sprites = Camera()
         # self.colliders = pygame.sprite.Group()
 
@@ -52,12 +53,22 @@ class Scene:
 
             utils.euler_integ(self.player.ball, deltatime * 10)
 
+            for obj in self.dynamic_objects:
+                obj.forces()
+                utils.euler_integ(obj, deltatime * 10)
+                utils.colider(obj)
+                utils.collision(self.player.ball, obj)
+                utils.collision(obj, self.player.ball)
+
             utils.colider(self.player.ball)
 
             for obj in self.objects:
                 utils.colider(obj)
                 if utils.collision(self.player.ball, obj):
                     self.player.check_grounded(obj)
+
+                for dynamic_obj in self.dynamic_objects:
+                    utils.collision(dynamic_obj, obj)
 
             for ball in self.balls:
                 utils.colider(ball)
@@ -69,7 +80,7 @@ class Scene:
 
     def draw(self):
         self.app.screen.fill('lightblue')
-        self.sprites.draw(self.player, self.app.screen, self.balls)
+        self.sprites.draw(self.player, self.app.screen, self.balls, self.dynamic_objects)
 
     def create_level(self):
         # Floor
@@ -121,10 +132,13 @@ class Scene:
 
         for i in range(0, 3):
             self.objects.append(
-                Rect([self.sprites], self.atlas_textures['platform_1_t'], (52 ,5 + i), (1, 1), 1, (0, 0, 0), True))
+                Rect([self.sprites], self.atlas_textures['platform_1_t'], (52, 5 + i), (1, 1), 1, (0, 0, 0), True))
 
         for i in range(0, 4):
             self.objects.append(
                 Rect([self.sprites], self.atlas_textures['platform_1_t'], (54, 4 + i), (1, 1), 1, (0, 0, 0), True))
 
         self.balls.append(Ball(2400, 100, 10, 30, 1, (100, 0, 80)))
+
+        self.dynamic_objects.append(
+            Rect([self.sprites], self.atlas_textures['platform_1_t'], (6, 3), (1, 1), 1, (50, 20, 46), False))

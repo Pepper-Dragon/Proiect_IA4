@@ -21,7 +21,8 @@ class Rect:
 
         self.collider = pygame.Rect(0,0,0,0)
 
-        self.sprite = GameSprite(groups, image, position, size)
+        if static:
+            self.sprite = GameSprite(groups, image, position, size)
 
         self.add_point(actual_position[0]-self.width/2, actual_position[1]-self.height/2, 0, 0, 0, 0)
         self.add_point(actual_position[0]+self.width/2, actual_position[1]-self.height/2, 0, 0, 0, 0)
@@ -44,18 +45,18 @@ class Rect:
         spring = ut.CSpring(a, b, length, nx, ny)
         self.springs.append(spring)
 
-    def draw(self, screen):
-        pass
-        # verteces = []
-        #
-        # for point in self.points:
-        #     x = point.x
-        #     y = point.y
-        #     vertex = (x, y)
-        #     verteces.append(vertex)
-        #
-        # pygame.draw.polygon(screen, self.color, verteces, 0)
-        #pygame.draw.circle(screen, (0, 0, 225), (self.center.x, self.center.y), 5)
+    def draw(self, screen, offset):
+        if not self.static:
+            verteces = []
+
+            for point in self.points:
+                x = point.x
+                y = point.y
+                vertex = (x, y) + offset
+                verteces.append(vertex)
+
+            pygame.draw.polygon(screen, self.color, verteces, 0)
+            # pygame.draw.circle(screen, (0, 0, 225), (self.center.x, self.center.y), 5)
 
     def gravity(self):
         for point in self.points:
