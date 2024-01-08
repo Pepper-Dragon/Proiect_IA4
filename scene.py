@@ -25,7 +25,7 @@ class Scene:
         # self.colliders = pygame.sprite.Group()
 
         # Player
-        self.player = Player(app.screen, (300, 360), {})
+        self.player = Player(app.screen, (200, 360), {})
 
         self.create_level()
 
@@ -73,7 +73,7 @@ class Scene:
 
     def create_level(self):
         # Floor
-        for i in range(0, 10):
+        for i in range(0, 100):
             self.objects.append(
                 Rect([self.sprites], self.atlas_textures['platform_1_t'], (i, 8), (1, 1), 1, (0, 0, 0), True))
 
@@ -82,8 +82,49 @@ class Scene:
             self.objects.append(
                 Rect([self.sprites], self.atlas_textures['platform_1_t'], (0, i), (1, 1), 1, (0, 0, 0), True))
             self.objects.append(
-                Rect([self.sprites], self.atlas_textures['platform_1_t'], (9, i), (1, 1), 1, (0, 0, 0), True))
+                Rect([self.sprites], self.atlas_textures['platform_1_t'], (99, i), (1, 1), 1, (0, 0, 0), True))
 
-        # Small ball
-        ball = Ball(360, 440, 10, 30, 0, (100, 0, 80))
-        self.balls.append(ball)
+        # Platforms
+        for i in range(0, 4):
+            self.objects.append(
+                Rect([self.sprites], self.atlas_textures['platform_1_t'], (5 + i, 6), (1, 1), 1, (0, 0, 0), True))
+
+        for i in range(0, 4):
+            self.objects.append(
+                Rect([self.sprites], self.atlas_textures['platform_1_t'], (10 + i, 4), (1, 1), 1, (0, 0, 0), True))
+
+        for i in range(0, 4):
+            self.objects.append(
+                Rect([self.sprites], self.atlas_textures['platform_1_t'], (15 + i, 2), (1, 1), 1, (0, 0, 0), True))
+
+        for i in range(0, 2):
+            self.objects.append(
+                Rect([self.sprites], self.atlas_textures['platform_1_t'], (14 + i, 0), (1, 1), 1, (0, 0, 0), True))
+
+        self.balls.append(Ball(900, -50, 10, 30, 1, (100, 0, 80)))
+
+        for i in range(0, 10):
+            self.objects.append(
+                Rect([self.sprites], self.atlas_textures['platform_1_t'], (20 + i, 0), (1, 1), 1, (0, 0, 0), True))
+
+        for i in range(0, 8):
+            self.objects.append(
+                Rect([self.sprites], self.atlas_textures['platform_1_t'], (20, 1 + i), (1, 1), 1, (0, 0, 0), True))
+
+        for i in range(0, 2):
+            self.objects.append(
+                Rect([self.sprites], self.atlas_textures['platform_1_t'], (40, 6 + i), (1, 1), 1, (0, 0, 0), True))
+
+        for i in range(0, 2):
+            self.objects.append(
+                Rect([self.sprites], self.atlas_textures['platform_1_t'], (50, 6 + i), (1, 1), 1, (0, 0, 0), True))
+
+        for i in range(0, 3):
+            self.objects.append(
+                Rect([self.sprites], self.atlas_textures['platform_1_t'], (52 ,5 + i), (1, 1), 1, (0, 0, 0), True))
+
+        for i in range(0, 4):
+            self.objects.append(
+                Rect([self.sprites], self.atlas_textures['platform_1_t'], (54, 4 + i), (1, 1), 1, (0, 0, 0), True))
+
+        self.balls.append(Ball(2400, 100, 10, 30, 1, (100, 0, 80)))

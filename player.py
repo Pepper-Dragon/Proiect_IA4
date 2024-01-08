@@ -11,7 +11,7 @@ from deltaTime import DeltaTime
 class Player:
     def __init__(self, screen, position: tuple, parameters: dict):
         self.screen = screen
-        self.ball = Ball(position[0], position[1], 10, 30, 1, (100, 0, 80))
+        self.ball = Ball(position[0], position[1], 10, 30, 2, (100, 0, 80))
 
     #     self.image = image
     #     self.image.fill('green')
@@ -30,11 +30,13 @@ class Player:
     def input(self):
         if EventHandler.is_pressed(pygame.K_a):
             for point in self.ball.points:
-                point.fx -= PLAYER_MOVE_FORCE
+                if point.vx > -TERM_VEL:
+                    point.fx -= PLAYER_MOVE_FORCE
 
         if EventHandler.is_pressed(pygame.K_d):
             for point in self.ball.points:
-                point.fx += PLAYER_MOVE_FORCE
+                if point.vx < TERM_VEL:
+                    point.fx += PLAYER_MOVE_FORCE
 
         if EventHandler.keydown(pygame.K_w) and self.is_grounded:
             for point in self.ball.points:

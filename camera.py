@@ -17,7 +17,7 @@ class Camera(pygame.sprite.Group):
 
         offset = pygame.math.Vector2()
         offset.x = display.get_width() / 2 - target.ball.collider.centerx
-        offset.y = display.get_height() / 2 - target.ball.collider.centery
+        offset.y = display.get_height() / 2 - target.ball.collider.centery + 150
 
         for sprite in self.sprites():
             sprite_offset = offset + sprite.rect.topleft
