@@ -43,6 +43,9 @@ class Player:
     def move(self):
         pass
 
+    def enlarge(self):
+        self.ball.p += 2000
+
     def check_grounded(self, collider):
         if self.ball.collider.centery < collider.collider.centery:
             self.is_grounded = True

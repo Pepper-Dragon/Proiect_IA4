@@ -50,7 +50,7 @@ class Ball:
 
         red = (225, 100, 100)
         pygame.draw.polygon(screen, self.color, verteces, 0)
-        pygame.draw.circle(screen, (0, 0, 225), (verteces[0][0], verteces[0][1]), 5)
+        # pygame.draw.circle(screen, (0, 0, 225), (verteces[0][0], verteces[0][1]), 5)
 
     def gravity(self):
         for point in self.points:

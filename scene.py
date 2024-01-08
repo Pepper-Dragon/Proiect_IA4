@@ -1,6 +1,7 @@
 import pygame
 
 import objutils as utils
+from ball import Ball
 
 from camera import Camera
 from deltaTime import DeltaTime
@@ -19,6 +20,7 @@ class Scene:
         self.atlas_textures = self.gen_atlas_textures('assets/Tiles/spritesheet.png')
 
         self.objects = []
+        self.balls = []
         self.sprites = Camera()
         # self.colliders = pygame.sprite.Group()
 
@@ -57,12 +59,17 @@ class Scene:
                 if utils.collision(self.player.ball, obj):
                     self.player.check_grounded(obj)
 
+            for ball in self.balls:
+                utils.colider(ball)
+                if utils.sphere_collision(self.player.ball, ball):
+                    self.player.enlarge()
+                    self.balls.remove(ball)
+
             dt -= deltatime
 
     def draw(self):
         self.app.screen.fill('lightblue')
-        self.sprites.draw(self.player, self.app.screen)
-        # self.player.draw()
+        self.sprites.draw(self.player, self.app.screen, self.balls)
 
     def create_level(self):
         # Floor
@@ -76,3 +83,7 @@ class Scene:
                 Rect([self.sprites], self.atlas_textures['platform_1_t'], (0, i), (1, 1), 1, (0, 0, 0), True))
             self.objects.append(
                 Rect([self.sprites], self.atlas_textures['platform_1_t'], (9, i), (1, 1), 1, (0, 0, 0), True))
+
+        # Small ball
+        ball = Ball(360, 440, 10, 30, 0, (100, 0, 80))
+        self.balls.append(ball)

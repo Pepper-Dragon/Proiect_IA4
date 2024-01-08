@@ -76,6 +76,15 @@ def colider(obj):
     obj.collider.update(low_x,low_y,high_x-low_x,high_y-low_y)
     obj.collider.inflate_ip(10,10)
 
+def sphere_collision(obj1, obj2):
+    center1 = obj1.collider.center
+    center2 = obj2.collider.center
+
+    if distance(center1[0],center1[1],center2[0],center2[1]) < obj1.radius + obj2.radius:
+        return True
+
+    return False
+
 def collision(obj1, obj2):
 
     if not pygame.Rect.colliderect(obj1.collider,obj2.collider):
