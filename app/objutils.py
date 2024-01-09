@@ -41,20 +41,6 @@ def euler_integ(obj: object, dt: object) -> object:
         point.x = point.x + point.vx * dt
 
         point.vy = point.vy + (point.fy / obj.mass) * dt
-
-        dry = point.vy * dt
-
-        # y boundary
-
-        '''
-        if point.y + dry > SCRSIZE:
-            point.vx -= 0.1 * point.vx
-            point.fx = 0
-            dry = SCRSIZE - point.y
-            point.vy = -0.1 * point.vy
-
-        point.y = point.y + dry
-        '''
         point.y = point.y + point.vy * dt
 
     if isinstance(obj, ball.Ball):
